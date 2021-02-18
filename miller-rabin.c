@@ -5,33 +5,6 @@
 #include <sys/random.h>
 #include <time.h>
 
-/*
-mpz_t *modular_exponentation(int a, int b, mpz_t n) {
-    // set c = 0
-    mpz_t c;
-    mpz_init(c);
-    // set d = 1
-    mpz_t d;
-    mpz_init_set_ui(d, 1);
-    // TODO: use the binary representation of b
-
-    for (size_t i = k; i >= 0; i--) {
-        // set c = 2c
-        mpz_mul_ui(c, c, 2);
-        // set d = (d*d) mod n
-        mpz_powm_ui(d, d, 2, n);
-        // TODO: if b_i == 1
-        // set c = c + 1
-        mpz_add_ui(c, c, 1);
-        // set d = (d*a) mod n
-        mpz_mul_ui(d, d, a);
-        mpz_mod(d, d, n);
-    }
-
-    // return d
-    return d;
-}
-*/
 
 int witness(mpz_t a, mpz_t n) {
     // set t >= 1 and set u to odd int, and n-1 = 2^t u
