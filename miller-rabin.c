@@ -119,11 +119,8 @@ int miller_rabin(mpz_t n, int s) {
     return 1;
 }
 
-int main(int argc, char *argv[]) {
-    char mode;
-    if (argc > 1) {
-        mode = argv[2][0];
-    }
+/*
+int main() {
     // grab a random int from C rand()
     int seed;
     srand(time(NULL));
@@ -153,15 +150,10 @@ int main(int argc, char *argv[]) {
     mpz_out_str(stdout, 10, n); 
     printf(" %s prime.\n", miller_rabin(n, s) ? "is": "is not");
 
-    switch (mode) {
-        case 'c':
-            int confirm = mpz_probab_prime_p(n, 100);
-            printf("probability of prime (2: definitely prime, 1: probably prime, 0: definitely composite): %d\n",
-                confirm);
-    }
     // free memory
     mpz_clear(n);
     gmp_randclear(rand_int);
 
     return 0;
 }
+*/
