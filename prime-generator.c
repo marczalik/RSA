@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <gmp.h>
-#include <sys/random.h>
 #include "miller-rabin.c"
 
 int generate_prime(mpz_t candidate, int bt_len, int s) {
@@ -18,6 +17,8 @@ int generate_prime(mpz_t candidate, int bt_len, int s) {
         mpz_urandomb(candidate, state, bt_len);
         mpz_setbit(candidate, 0);
     } while (!miller_rabin(candidate, s)); 
+
+    gmp_randclear(state);
 
     return 0;
 }

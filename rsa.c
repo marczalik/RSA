@@ -3,8 +3,10 @@
 #include <gmp.h>
 #include "prime-generator.c"
 
-int rsa(int bt_len, int s) {
-    mpz_t p;
+int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s) {
+    mpz_t p, p_1, q, q_1, phi, gcd_e_phi;
+    mpz_inits(p, p_1, q, q_1, phi, gcd_e_phi, NULL);
+    /*
     mpz_t p_1;
     mpz_t q;
     mpz_t q_1;
@@ -21,7 +23,8 @@ int rsa(int bt_len, int s) {
     mpz_init(d);
     mpz_init(phi);
     mpz_init(gcd_e_phi);
-    mpz_init_set_ui(e, 65537);
+    */
+    // mpz_init_set_ui(e, 65537);
     
     // find suitable prime candidates for p and q    
     generate_prime(p, bt_len, s);
@@ -41,7 +44,48 @@ int rsa(int bt_len, int s) {
     
     // find d
     mpz_invert(d, e, phi);
+
+    mpz_clears(p, p_1, q, q_1, phi, gcd_e_phi, NULL);
 }
 
 int main() {
+    mpz_t plaintext, cyphertext;
+    mpz_inits(plaintext, cyphertext, NULL);
+    mpz_set_ui(plaintext, 123456789);
+
+    printf("Plaintext before encryption: ");
+    mpz_out_str(stdout, 10, plaintext);
+    printf("\n");
+
+    mpz_t e, d, n;
+    mpz_inits(d, n, NULL);
+    mpz_init_set_ui(e, 65537);
+
+    generate_keys(e, d, n, 2048, 40);
+
+    printf("e: ");
+    mpz_out_str(stdout, 10, e);
+    printf("\n");
+    printf("d: ");
+    mpz_out_str(stdout, 10, d);
+    printf("\n");
+    printf("n: ");
+    mpz_out_str(stdout, 10, n);
+    printf("\n");
+
+    mpz_powm(cyphertext, plaintext, e, n);
+
+    printf("Cyphertext after encryption: ");
+    mpz_out_str(stdout, 10, cyphertext);
+    printf("\n");
+
+    mpz_powm(plaintext, cyphertext, d, n);
+
+    printf("Plaintext after decryption: ");
+    mpz_out_str(stdout, 10, plaintext);
+    printf("\n");
+
+    mpz_clears(plaintext, cyphertext, e, d, n, NULL);
+    
+    return 0;
 }

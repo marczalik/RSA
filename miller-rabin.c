@@ -2,15 +2,17 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <gmp.h>
-#include <sys/random.h>
 #include <time.h>
 
 
 int witness(mpz_t a, mpz_t n) {
     // set t >= 1 and set u to odd int, and n-1 = 2^t u
+    mpz_t t, u, n_1;
+    /*
     mpz_t t;
     mpz_t u;
     mpz_t n_1;
+    */
 
     mpz_init_set_ui(t, 0);
     // set u = n-1
@@ -51,11 +53,14 @@ int witness(mpz_t a, mpz_t n) {
         mpz_out_str(stdout, 10, n_1); 
         */
         if (!mpz_cmp_ui(x, 1) && mpz_cmp_ui(x_prev, 1) && mpz_cmp(x_prev, n_1)) {
+            mpz_clears(t, u, n_1, x, x_prev, NULL);
+            /*
             mpz_clear(t);
             mpz_clear(u);
             mpz_clear(n_1);
             mpz_clear(x);
             mpz_clear(x_prev);
+            */
             //printf("inner loop\n");
             return 1;
         }
@@ -64,20 +69,26 @@ int witness(mpz_t a, mpz_t n) {
     //mpz_out_str(stdout, 10, x); 
     // if x_t != 1
     if (mpz_cmp_ui(x, 1)) {
+        mpz_clears(t, u, n_1, x, x_prev, NULL);
+        /*
         mpz_clear(t);
         mpz_clear(u);
         mpz_clear(n_1);
         mpz_clear(x);
         mpz_clear(x_prev);
+        */
         //printf("test\n");
         return 1;
     }
 
+    mpz_clears(t, u, n_1, x, x_prev, NULL);
+    /*
     mpz_clear(t);
     mpz_clear(u);
     mpz_clear(n_1);
     mpz_clear(x);
     mpz_clear(x_prev);
+    */
     return 0;
 }
 
