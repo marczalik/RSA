@@ -1,7 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <gmp.h>
+#include <unistd.h>
+#include <time.h>
 #include "prime-generator.c"
+
+#define FILENAME_FORMAT "%Y%m%d-%H%M"
+#define FILENAME_SIZE 50
+#define PUBLIC_NAME "-Public-Key.txt"
+#define SECRET_NAME "-Secret-Key.txt"
+
+char *create_filename(char *t, char *s);
 
 int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s) {
     // allocate and initialize variables
@@ -24,6 +34,72 @@ int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s) {
 
     // free variables
     mpz_clears(p, p_1, q, q_1, phi, gcd_e_phi, NULL);
+}
+
+/* save newly generated keys to a public key file and a private key file */
+int save_keys(mpz_t e, mpz_t d, mpz_t n) {
+    char timestr[FILENAME_SIZE];
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    strftime(timestr, sizeof(timestr), FILENAME_FORMAT, t);
+
+    FILE *pubfptr;
+    FILE *secfptr;
+
+    //create_filename(timestr, PUBLIC_NAME);
+    //create_filename(timestr, SECRET_NAME);
+
+    pubfptr = fopen(create_filename(timestr, PUBLIC_NAME), "w");
+    secfptr = fopen(create_filename(timestr, SECRET_NAME), "w");
+
+    if (!pubfptr) {
+        exit(EXIT_FAILURE);
+    }
+
+    if (!secfptr) {
+        exit(EXIT_FAILURE);
+    }
+
+    // save in raw data format
+    mpz_out_raw(pubfptr, e);
+    fputc('\n', pubfptr);
+    mpz_out_raw(pubfptr, n);
+
+    mpz_out_raw(secfptr, d);
+    fputc('\n', secfptr);
+    mpz_out_raw(secfptr, n);
+    
+    /* Save in base 10 for testing
+    mpz_out_str(pubfptr, 10, e);
+    fputc('\n', pubfptr);
+    mpz_out_str(pubfptr, 10, n);
+
+    mpz_out_str(secfptr, 10, d);
+    fputc('\n', secfptr);
+    mpz_out_str(secfptr, 10, n);
+    */
+
+    fclose(pubfptr);
+    fclose(secfptr);
+
+    return 0;
+}
+
+char *create_filename(char *timestr, char *filetype) {
+    printf("%s\n%s\n", timestr, filetype);
+    char *filename;
+    char *end;
+    size_t timestr_len = strlen(timestr);
+    size_t filetype_len = strlen(filetype);
+
+    if (filename = malloc(timestr_len + filetype_len)) {
+        snprintf(filename, timestr_len + filetype_len + 1, "%s%s", timestr, filetype);
+    }
+    
+    printf("%s\n", timestr);
+    printf("%s\n", filename);
+
+    return filename;
 }
 
 int main() {
@@ -62,6 +138,8 @@ int main() {
     printf("Plaintext after decryption: ");
     mpz_out_str(stdout, 10, plaintext);
     printf("\n");
+
+    save_keys(e, d, n);
 
     mpz_clears(plaintext, cyphertext, e, d, n, NULL);
     
