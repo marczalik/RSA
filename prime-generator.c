@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <gmp.h>
-#include "miller-rabin.c"
+#include "rsa.h"
 
 int generate_prime(mpz_t candidate, int bt_len, int s) {
     // get seed for GMP

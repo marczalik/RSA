@@ -4,14 +4,12 @@
 #include <gmp.h>
 #include <unistd.h>
 #include <time.h>
-#include "prime-generator.c"
+#include "rsa.h"
 
 #define FILENAME_FORMAT "%Y%m%d-%H%M"
 #define FILENAME_SIZE 50
 #define PUBLIC_NAME "-Public-Key.txt"
 #define SECRET_NAME "-Secret-Key.txt"
-
-char *create_filename(char *t, char *s);
 
 int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s) {
     // allocate and initialize variables
@@ -38,6 +36,7 @@ int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s) {
 
 /* save newly generated keys to a public key file and a private key file */
 int save_keys(mpz_t e, mpz_t d, mpz_t n) {
+    // Create filename with current date and time and key type
     char timestr[FILENAME_SIZE];
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
@@ -45,9 +44,6 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
 
     FILE *pubfptr;
     FILE *secfptr;
-
-    //create_filename(timestr, PUBLIC_NAME);
-    //create_filename(timestr, SECRET_NAME);
 
     pubfptr = fopen(create_filename(timestr, PUBLIC_NAME), "w");
     secfptr = fopen(create_filename(timestr, SECRET_NAME), "w");
@@ -92,6 +88,7 @@ char *create_filename(char *timestr, char *filetype) {
     size_t timestr_len = strlen(timestr);
     size_t filetype_len = strlen(filetype);
 
+    // Concatenate time string and file type
     if (filename = malloc(timestr_len + filetype_len)) {
         snprintf(filename, timestr_len + filetype_len + 1, "%s%s", timestr, filetype);
     }
@@ -102,6 +99,21 @@ char *create_filename(char *timestr, char *filetype) {
     return filename;
 }
 
+int create_new_keypair(int bt_len, int s) {
+    mpz_t e, d, n;
+    mpz_inits(d, n, NULL);
+    mpz_init_set_ui(e, 65537);
+
+    generate_keys(e, d, n, bt_len, s);
+
+    save_keys(e, d, n);
+
+    mpz_clears(e, d, n, NULL);
+    
+    return 0;
+}
+
+/*
 int main() {
     mpz_t plaintext, cyphertext;
     mpz_inits(plaintext, cyphertext, NULL);
@@ -145,3 +157,4 @@ int main() {
     
     return 0;
 }
+*/

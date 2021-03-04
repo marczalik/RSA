@@ -3,16 +3,11 @@
 #include <errno.h>
 #include <gmp.h>
 #include <time.h>
-
+#include "rsa.h"
 
 int witness(mpz_t a, mpz_t n) {
     // set t >= 1 and set u to odd int, and n-1 = 2^t u
     mpz_t t, u, n_1;
-    /*
-    mpz_t t;
-    mpz_t u;
-    mpz_t n_1;
-    */
 
     mpz_init_set_ui(t, 0);
     // set u = n-1
@@ -31,64 +26,30 @@ int witness(mpz_t a, mpz_t n) {
     mpz_t x;
     mpz_init(x);
     mpz_powm(x, a, u, n);
-    /*
-    mpz_out_str(stdout, 10, a); 
-    mpz_out_str(stdout, 10, t); 
-    mpz_out_str(stdout, 10, u); 
-    mpz_out_str(stdout, 10, n_1); 
-    mpz_out_str(stdout, 10, n); 
-    mpz_out_str(stdout, 10, x); 
-    */
+
     mpz_t x_prev;
     mpz_init_set(x_prev, x);
     for (size_t i = 1; mpz_cmp_ui(t, i) >= 0; i++) {
-        // printf("loop\n");
         mpz_set(x_prev, x);
         // x_i = x_i-1^2 mod n
         mpz_powm_ui(x, x_prev, 2, n);
         // if x_i == 1 and x_i-1 != 1 and x_i-1 != n-1
-        /*
-        mpz_out_str(stdout, 10, x); 
-        mpz_out_str(stdout, 10, x_prev); 
-        mpz_out_str(stdout, 10, n_1); 
-        */
         if (!mpz_cmp_ui(x, 1) && mpz_cmp_ui(x_prev, 1) && mpz_cmp(x_prev, n_1)) {
             mpz_clears(t, u, n_1, x, x_prev, NULL);
-            /*
-            mpz_clear(t);
-            mpz_clear(u);
-            mpz_clear(n_1);
-            mpz_clear(x);
-            mpz_clear(x_prev);
-            */
-            //printf("inner loop\n");
+
             return 1;
         }
     }
     
-    //mpz_out_str(stdout, 10, x); 
     // if x_t != 1
     if (mpz_cmp_ui(x, 1)) {
         mpz_clears(t, u, n_1, x, x_prev, NULL);
-        /*
-        mpz_clear(t);
-        mpz_clear(u);
-        mpz_clear(n_1);
-        mpz_clear(x);
-        mpz_clear(x_prev);
-        */
-        //printf("test\n");
+
         return 1;
     }
 
     mpz_clears(t, u, n_1, x, x_prev, NULL);
-    /*
-    mpz_clear(t);
-    mpz_clear(u);
-    mpz_clear(n_1);
-    mpz_clear(x);
-    mpz_clear(x_prev);
-    */
+
     return 0;
 }
 
@@ -96,7 +57,6 @@ int witness(mpz_t a, mpz_t n) {
 int miller_rabin(mpz_t n, int s) {
     // return early if n is even and not 2
     if (mpz_cmp_ui(n, 2) && mpz_even_p(n)) {
-        //printf("returned early\n");
         return 0;
     }
     mpz_t a;
@@ -110,23 +70,22 @@ int miller_rabin(mpz_t n, int s) {
     gmp_randinit_default(rand);
     gmp_randseed_ui(rand, seed);
     for (size_t j = 1; j <= s; j++) {
-        // printf("mr\n");
         do {
         // set a to Random int between (1, n-1)
             mpz_urandomm(a, rand, n);
-            //mpz_out_str(stdout, 10, a); 
-            //printf("\n");
-            //mpz_out_str(stdout, 10, a); 
         } while (!mpz_cmp_ui(a, 0));
         // call Witness function on (a,n), if witness, return failure
         if (witness(a, n)) {
             mpz_clear(a);
+
             return 0;
         }
     }
+
     // else, return success
     mpz_clear(a);
     gmp_randclear(rand);
+
     return 1;
 }
 
