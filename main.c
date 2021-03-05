@@ -34,7 +34,7 @@ typedef struct {
 void usage(char *progname, int opt);
 int execute_option(options_t *options);
 
-/* handle command line arguments */
+/*      Handle command line arguments for RSA.  */
 int main(int argc, char *argv[]) {
     int opt;
     options_t options = { 0, 0, 2048, "stdin", "stdout", "stdout" };
@@ -44,44 +44,26 @@ int main(int argc, char *argv[]) {
     while ((opt = getopt(argc, argv, OPTSTR)) != EOF) {
         switch (opt) {
             case 'g':
-                //TODO: Add functionality to generate keypair
+                // Add functionality to generate keypair
                 options.mode = opt;
                 options.bt_len = atoi(optarg);
                 break;
             case 'e':
-                //TODO: Add encrypt functionality
+                // Add encrypt functionality
                 options.mode = opt;
                 break;
             case 'd':
-                //TODO: Add decrpy functionality
+                // Add decrpy functionality
                 options.mode = opt;
                 break;
             case 'k':
                 options.keyfile = optarg;
-                /*
-                if (!(options.keyfile = fopen(optarg, "r"))) {
-                    perror(ERR_FOPEN_KEYFILE);
-                    exit(EXIT_FAILURE);
-                }
-                */
                 break;
             case 'm':
                 options.message = optarg;
-                /*
-                if (!(options.message = fopen(optarg, "r"))) {
-                    perror(ERR_FOPEN_MESSAGE);
-                    exit(EXIT_FAILURE);
-                }
-                */
                 break;
             case 'o':
                 options.output = optarg;
-                /*
-                if (!(options.output = fopen(optarg, "w"))) {
-                    perror(ERR_FOPEN_OUTPUT);
-                    exit(EXIT_FAILURE);
-                }
-                */
                 break;
             case 'v':
                 options.verbose += 1;
@@ -101,18 +83,20 @@ int main(int argc, char *argv[]) {
     return EXIT_SUCCESS;
 }
 
+/*      Reports correct usage of main.  */
 void usage(char *progname, int opt) {
     fprintf(stderr, USAGE_FMT, progname ? progname : DEFAULT_PROGNAME);
     exit(EXIT_FAILURE);
 }
 
+/*      Runs command line arguments.     */
 int execute_option(options_t *options) {
     if (!options) {
         errno = EINVAL;
         return EXIT_FAILURE;
     }
 
-    //TODO: call functions
+    // Call functions
     if (options->mode == 'g') {
         if (!options->bt_len) {
             errno = EINVAL;

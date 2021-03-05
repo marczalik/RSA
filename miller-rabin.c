@@ -7,24 +7,26 @@
 */
 #include "rsa.h"
 
+/*      Given a candidate integer n and a base a, tests n to see if it is prime or composite
+        using Fermat's Little Theorem.  */
 int witness(mpz_t a, mpz_t n) {
-    // set t >= 1 and set u to odd int, and n-1 = 2^t u
+    // Set t >= 1 and set u to odd int, and n-1 = 2^t u
     mpz_t t, u, n_1;
 
     mpz_init_set_ui(t, 0);
-    // set u = n-1
+    // Set u = n-1
     mpz_init_set(u, n);
     mpz_sub_ui(u, u, 1);
-    // set n-1
+    // Set n-1
     mpz_init_set(n_1, n);
     mpz_sub_ui(n_1, n_1, 1);
 
-    // as long as u is even, increment t and floor divide u by 2
+    // As long as u is even, increment t and floor divide u by 2
     while (mpz_even_p(u)) {
         mpz_add_ui(t, t, 1);
         mpz_fdiv_q_ui(u, u, 2);
     }
-    // set x_0 to Modular exponentiation(a, u, n)
+    // Set x_0 to Modular exponentiation(a, u, n)
     mpz_t x;
     mpz_init(x);
     mpz_powm(x, a, u, n);
@@ -35,7 +37,7 @@ int witness(mpz_t a, mpz_t n) {
         mpz_set(x_prev, x);
         // x_i = x_i-1^2 mod n
         mpz_powm_ui(x, x_prev, 2, n);
-        // if x_i == 1 and x_i-1 != 1 and x_i-1 != n-1
+        // If x_i == 1 and x_i-1 != 1 and x_i-1 != n-1
         if (!mpz_cmp_ui(x, 1) && mpz_cmp_ui(x_prev, 1) && mpz_cmp(x_prev, n_1)) {
             mpz_clears(t, u, n_1, x, x_prev, NULL);
 
@@ -43,7 +45,7 @@ int witness(mpz_t a, mpz_t n) {
         }
     }
     
-    // if x_t != 1
+    // If x_t != 1
     if (mpz_cmp_ui(x, 1)) {
         mpz_clears(t, u, n_1, x, x_prev, NULL);
 
@@ -55,9 +57,10 @@ int witness(mpz_t a, mpz_t n) {
     return 0;
 }
 
-/* n is an odd integer greater than 2, s is the number of random values to check against */
+/*      Given a candidate integer n, check it for primality by calling witness function s number of times 
+        each with random base a.        */
 int miller_rabin(mpz_t n, int s) {
-    // return early if n is even and not 2
+    // Return early if n is even and not 2
     if (mpz_cmp_ui(n, 2) && mpz_even_p(n)) {
         return 0;
     }
@@ -73,10 +76,10 @@ int miller_rabin(mpz_t n, int s) {
     gmp_randseed_ui(rand, seed);
     for (size_t j = 1; j <= s; j++) {
         do {
-        // set a to Random int between (1, n-1)
+        // Set a to Random int between (1, n-1)
             mpz_urandomm(a, rand, n);
         } while (!mpz_cmp_ui(a, 0));
-        // call Witness function on (a,n), if witness, return failure
+        // Call Witness function on (a,n), if witness, return failure
         if (witness(a, n)) {
             mpz_clear(a);
 
@@ -84,7 +87,7 @@ int miller_rabin(mpz_t n, int s) {
         }
     }
 
-    // else, return success
+    // Else, return success
     mpz_clear(a);
     gmp_randclear(rand);
 

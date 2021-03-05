@@ -5,7 +5,9 @@
 */
 #include "rsa.h"
 
-/* encrypt should take in filename of key plus <what?> */
+/*      Given a keyfile and a message to encrypt, opens the keyfile, extracts the key
+        and uses it to encrypt the message in filein. 
+        Stores the encrypted result in fileout.         */
 int encrypt(char *keyfile, char *filein, char *fileout) {
     mpz_t e, n, plaintext, cyphertext;
     mpz_inits(e, n, plaintext, cyphertext, NULL);
@@ -27,7 +29,9 @@ int encrypt(char *keyfile, char *filein, char *fileout) {
     return 0;
 }
 
-/* decrypt should take in filename of key plus <what?> */
+/*      Given a keyfile and a message to decrypt, opens the keyfile, extracts the key
+        and uses it to decrypt the message in filein. 
+        Stores the decrypted result in fileout.         */
 int decrypt(char *keyfile, char *filein, char *fileout) {
     mpz_t d, n, plaintext, cyphertext;
     mpz_inits(d, n, plaintext, cyphertext, NULL);
@@ -49,6 +53,7 @@ int decrypt(char *keyfile, char *filein, char *fileout) {
     return 0;
 }
 
+/*      Opens a keyfile and extracts the resulting key values to exponent (e or d) and n.       */
 int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
     FILE *fptr;
 
@@ -74,6 +79,7 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
     return 0;
 }
 
+/*      Reads the message from filename and stores it for encryption/decryption.        */
 int read_text_file(char *filename, mpz_t message) {
     FILE *fptr;
 
@@ -91,6 +97,7 @@ int read_text_file(char *filename, mpz_t message) {
     return 0;
 }
 
+/*      Writes the encrypted/decrypted message to filename.     */
 int write_text_file(char *filename, mpz_t message) {
     FILE *fptr;
 
