@@ -1,6 +1,8 @@
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <gmp.h>
+*/
 #include "rsa.h"
 
 /* encrypt should take in filename of key plus <what?> */
@@ -106,8 +108,8 @@ int write_text_file(char *filename, mpz_t message) {
     return 0;
 }
 
+/*
 int main() {
-    /*
     mpz_t plaintext, cyphertext;
     mpz_inits(plaintext, cyphertext, NULL);
     mpz_set_ui(plaintext, 123456789);
@@ -141,7 +143,6 @@ int main() {
     printf("\n");
 
     mpz_clears(e, d, n, NULL);
-    */
 
     encrypt("20210302-2057-Public-Key.txt", "test-plain.txt", "test-cypher.txt");
 
@@ -149,3 +150,4 @@ int main() {
 
     return 0;
 }
+*/

@@ -1,3 +1,14 @@
+#ifndef RSA_H
+#define RSA_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <libgen.h>
+#include <errno.h>
+#include <string.h>
+#include <getopt.h>
+#include <gmp.h>
+#include <time.h>
 /* Header file for RSA functions */
 
 /* Miller-Rabin functions */
@@ -22,3 +33,4 @@ int decrypt(char *keyfile, char *filein, char *fileout);
 int open_key_file(mpz_t exponent, mpz_t n, char *filename);
 int read_text_file(char *filename, mpz_t message);
 int write_text_file(char *filename, mpz_t message);
+#endif

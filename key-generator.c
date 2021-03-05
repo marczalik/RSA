@@ -1,9 +1,11 @@
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <gmp.h>
 #include <unistd.h>
 #include <time.h>
+*/
 #include "rsa.h"
 
 #define FILENAME_FORMAT "%Y%m%d-%H%M"
@@ -82,7 +84,6 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
 }
 
 char *create_filename(char *timestr, char *filetype) {
-    printf("%s\n%s\n", timestr, filetype);
     char *filename;
     char *end;
     size_t timestr_len = strlen(timestr);
@@ -93,9 +94,6 @@ char *create_filename(char *timestr, char *filetype) {
         snprintf(filename, timestr_len + filetype_len + 1, "%s%s", timestr, filetype);
     }
     
-    printf("%s\n", timestr);
-    printf("%s\n", filename);
-
     return filename;
 }
 

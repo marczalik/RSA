@@ -1,8 +1,10 @@
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <gmp.h>
 #include <time.h>
+*/
 #include "rsa.h"
 
 int witness(mpz_t a, mpz_t n) {
