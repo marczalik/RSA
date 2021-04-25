@@ -54,6 +54,7 @@ int witness(mpz_t a, mpz_t n) {
 
     mpz_clears(t, u, n_1, x, x_prev, NULL);
 
+    // Leaving this is return 0 as miller_rabin relies on if (witness()) check to work
     return 0;
 }
 
@@ -91,6 +92,7 @@ int miller_rabin(mpz_t n, int s) {
     mpz_clear(a);
     gmp_randclear(rand);
 
+    // Leaving this as return 1 on success, as prime-generator function relies on if (!miller_rabin()) check to work
     return 1;
 }
 

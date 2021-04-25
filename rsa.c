@@ -26,7 +26,7 @@ int encrypt(char *keyfile, char *filein, char *fileout) {
 
     mpz_clears(e, n, plaintext, cyphertext, NULL);
     
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*      Given a keyfile and a message to decrypt, opens the keyfile, extracts the key
@@ -50,7 +50,7 @@ int decrypt(char *keyfile, char *filein, char *fileout) {
 
     mpz_clears(d, n, plaintext, cyphertext, NULL);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*      Opens a keyfile and extracts the resulting key values to exponent (e or d) and n.       */
@@ -76,7 +76,7 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
 
     fclose(fptr);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*      Reads the message from filename and stores it for encryption/decryption.        */
@@ -94,7 +94,7 @@ int read_text_file(char *filename, mpz_t message) {
 
     fclose(fptr);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*      Writes the encrypted/decrypted message to filename.     */
@@ -112,7 +112,7 @@ int write_text_file(char *filename, mpz_t message) {
 
     fclose(fptr);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

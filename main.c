@@ -43,31 +43,36 @@ int main(int argc, char *argv[]) {
 
     while ((opt = getopt(argc, argv, OPTSTR)) != EOF) {
         switch (opt) {
+            // Generate new keypairs
             case 'g':
                 // Add functionality to generate keypair
                 options.mode = opt;
                 options.bt_len = atoi(optarg);
                 break;
+            // Encrypt file following -m flag
             case 'e':
-                // Add encrypt functionality
                 options.mode = opt;
                 break;
+            // Decrypt file following -m flag
             case 'd':
-                // Add decrpy functionality
                 options.mode = opt;
                 break;
+            // Encrypt/Decrypt using key file following this flag
             case 'k':
                 options.keyfile = optarg;
                 break;
+            // Encrypt/Decrypt file following this flag
             case 'm':
                 options.message = optarg;
                 break;
+            // Name of file to output result of encrypt/decrypt
             case 'o':
                 options.output = optarg;
                 break;
             case 'v':
                 options.verbose += 1;
                 break;
+            // Show Help
             case 'h':
             default:
                 usage(basename(argv[0]), opt);
@@ -91,12 +96,13 @@ void usage(char *progname, int opt) {
 
 /*      Runs command line arguments.     */
 int execute_option(options_t *options) {
+    // Error if no options are selected
     if (!options) {
         errno = EINVAL;
         return EXIT_FAILURE;
     }
 
-    // Call functions
+    // Call functions based on flags
     if (options->mode == 'g') {
         if (!options->bt_len) {
             errno = EINVAL;

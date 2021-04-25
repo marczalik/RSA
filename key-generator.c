@@ -45,7 +45,9 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
     char timestr[FILENAME_SIZE];
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
-    strftime(timestr, sizeof(timestr), FILENAME_FORMAT, t);
+    if (!strftime(timestr, sizeof(timestr), FILENAME_FORMAT, t)) {
+        exit(EXIT_FAILURE);
+    }
 
     // Open files for writing the keys to
     FILE *pubfptr;
@@ -89,7 +91,7 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
     free(pubfile);
     free(secfile);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*      Concatenate timestamp and filetype, return pointer to string.   */
@@ -101,7 +103,10 @@ char *create_filename(char *timestr, char *filetype) {
 
     // Concatenate time string and file type
     if (filename = malloc(timestr_len + filetype_len + 1)) {
-        snprintf(filename, timestr_len + filetype_len + 1, "%s%s", timestr, filetype);
+        if (snprintf(filename, timestr_len + filetype_len + 1, "%s%s", timestr, filetype) > 
+            (timestr_len + filetype_len + 1)) {
+            exit(EXIT_FAILURE);
+        }
     }
     
     return filename;
@@ -121,7 +126,7 @@ int create_new_keypair(int bt_len, int s) {
 
     mpz_clears(e, d, n, NULL);
     
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*

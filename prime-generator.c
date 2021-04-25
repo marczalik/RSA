@@ -25,7 +25,7 @@ int generate_prime(mpz_t candidate, int bt_len, int s) {
 
     gmp_randclear(state);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 /*
