@@ -60,10 +60,12 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
     fptr = fopen(filename, "r");
     
     if (!fptr) {
+        perror("Error: ");
         return EXIT_FAILURE;
     }
 
     if (!mpz_inp_raw(exponent, fptr)) {
+        perror("Error: ");
         return EXIT_FAILURE;
     }
     
@@ -71,6 +73,7 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
     fgetc(fptr);
 
     if (!mpz_inp_raw(n, fptr)) {
+        perror("Error: ");
         return EXIT_FAILURE;
     }
 
@@ -86,6 +89,7 @@ int read_text_file(char *filename, mpz_t message) {
     fptr = fopen(filename, "r");
 
     if (!fptr) {
+        perror("Error: ");
         return EXIT_FAILURE;
     }
 
@@ -104,6 +108,7 @@ int write_text_file(char *filename, mpz_t message) {
     fptr = fopen(filename, "w");
 
     if (!fptr) {
+        perror("Error: ");
         return EXIT_FAILURE;
     }
 

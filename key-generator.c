@@ -46,6 +46,7 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
     if (!strftime(timestr, sizeof(timestr), FILENAME_FORMAT, t)) {
+        perror("Error: ");
         exit(EXIT_FAILURE);
     }
 
@@ -59,10 +60,12 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
     secfptr = fopen(secfile, "w");
 
     if (!pubfptr) {
+        perror("Error: ");
         exit(EXIT_FAILURE);
     }
 
     if (!secfptr) {
+        perror("Error: ");
         exit(EXIT_FAILURE);
     }
 
@@ -105,6 +108,7 @@ char *create_filename(char *timestr, char *filetype) {
     if (filename = malloc(timestr_len + filetype_len + 1)) {
         if (snprintf(filename, timestr_len + filetype_len + 1, "%s%s", timestr, filetype) > 
             (timestr_len + filetype_len + 1)) {
+            perror("Error: ");
             exit(EXIT_FAILURE);
         }
     }

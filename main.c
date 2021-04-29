@@ -96,8 +96,14 @@ void usage(char *progname, int opt) {
 
 /*      Runs command line arguments.     */
 int execute_option(options_t *options) {
-    // Error if no options are selected
+    // Error if no option object
     if (!options) {
+        errno = EINVAL;
+        return EXIT_FAILURE;
+    }
+
+    // Error if no option selected
+    if (!options->mode) {
         errno = EINVAL;
         return EXIT_FAILURE;
     }
