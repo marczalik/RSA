@@ -1,10 +1,3 @@
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <gmp.h>
-#include <time.h>
-*/
 #include "rsa.h"
 
 /*      Given a candidate integer n and a base a, tests n to see if it is prime or composite
@@ -12,11 +5,12 @@
 int witness(mpz_t a, mpz_t n) {
     // Set t >= 1 and set u to odd int, and n-1 = 2^t u
     mpz_t t, u, n_1;
-
     mpz_init_set_ui(t, 0);
+
     // Set u = n-1
     mpz_init_set(u, n);
     mpz_sub_ui(u, u, 1);
+
     // Set n-1
     mpz_init_set(n_1, n);
     mpz_sub_ui(n_1, n_1, 1);
@@ -26,6 +20,7 @@ int witness(mpz_t a, mpz_t n) {
         mpz_add_ui(t, t, 1);
         mpz_fdiv_q_ui(u, u, 2);
     }
+
     // Set x_0 to Modular exponentiation(a, u, n)
     mpz_t x;
     mpz_init(x);
@@ -68,10 +63,12 @@ int miller_rabin(mpz_t n, int s) {
     mpz_t a;
     mpz_init(a);
 
+    // Get seed for GMP
     int seed;
     srand(time(NULL));
     seed = rand();
 
+    // Seed GMP
     gmp_randstate_t rand;
     gmp_randinit_default(rand);
     gmp_randseed_ui(rand, seed);
@@ -96,6 +93,7 @@ int miller_rabin(mpz_t n, int s) {
     return 1;
 }
 
+// TEST CODE
 /*
 int main() {
     // grab a random int from C rand()

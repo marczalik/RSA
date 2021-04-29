@@ -1,12 +1,3 @@
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <libgen.h>
-#include <errno.h>
-#include <string.h>
-#include <getopt.h>
-*/
 #include "rsa.h"
 
 #define OPTSTR "vg:edf:k:m:o:h"
@@ -17,11 +8,13 @@
 #define ERR_EXEC_OPT "execute_option failed"
 #define DEFAULT_PROGNAME "main"
 
+// Global variables
 extern int erro;
 extern char *optarg;
 extern int opterr, optind;
 
-// struct copies from "how to write a good c main function"
+// Struct for capturing command line options
+// Copied from "how to write a good c main function"
 typedef struct {
     int         verbose;
     char        mode;
@@ -31,16 +24,19 @@ typedef struct {
     char        *output;
 } options_t;
 
+// Function declarations
 void usage(char *progname, int opt);
 int execute_option(options_t *options);
 
 /*      Handle command line arguments for RSA.  */
 int main(int argc, char *argv[]) {
+    // Initialize variables and struct
     int opt;
     options_t options = { 0, 0, 2048, "stdin", "stdout", "stdout" };
 
     opterr = 0;
 
+    // Parse options
     while ((opt = getopt(argc, argv, OPTSTR)) != EOF) {
         switch (opt) {
             // Generate new keypairs
@@ -80,6 +76,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // Execute options
     if (execute_option(&options) != EXIT_SUCCESS) {
         perror(ERR_EXEC_OPT);
         exit(EXIT_FAILURE);

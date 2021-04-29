@@ -1,11 +1,3 @@
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <gmp.h>
-#include <unistd.h>
-#include <time.h>
-*/
 #include "rsa.h"
 
 #define FILENAME_FORMAT "%Y%m%d-%H%M"
@@ -120,6 +112,7 @@ char *create_filename(char *timestr, char *filetype) {
         bt_len indicates length of d and n.
         s indicates confidence level of primality testing.      */
 int create_new_keypair(int bt_len, int s) {
+    // Allocate and initialize variables
     mpz_t e, d, n;
     mpz_inits(d, n, NULL);
     mpz_init_set_ui(e, 65537);
@@ -128,11 +121,13 @@ int create_new_keypair(int bt_len, int s) {
 
     save_keys(e, d, n);
 
+    // Free variables
     mpz_clears(e, d, n, NULL);
     
     return EXIT_SUCCESS;
 }
 
+// TEST CODE
 /*
 int main() {
     mpz_t plaintext, cyphertext;

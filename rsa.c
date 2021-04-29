@@ -1,14 +1,10 @@
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <gmp.h>
-*/
 #include "rsa.h"
 
 /*      Given a keyfile and a message to encrypt, opens the keyfile, extracts the key
         and uses it to encrypt the message in filein. 
         Stores the encrypted result in fileout.         */
 int encrypt(char *keyfile, char *filein, char *fileout) {
+    // Allocate and initialize variables
     mpz_t e, n, plaintext, cyphertext;
     mpz_inits(e, n, plaintext, cyphertext, NULL);
 
@@ -21,9 +17,10 @@ int encrypt(char *keyfile, char *filein, char *fileout) {
     // Use key to encrypt message
     mpz_powm(cyphertext, plaintext, e, n);
     
-    // Write cyphertext
+    // Write cyphertext to file
     write_text_file(fileout, cyphertext);
 
+    // Free variables
     mpz_clears(e, n, plaintext, cyphertext, NULL);
     
     return EXIT_SUCCESS;
@@ -33,6 +30,7 @@ int encrypt(char *keyfile, char *filein, char *fileout) {
         and uses it to decrypt the message in filein. 
         Stores the decrypted result in fileout.         */
 int decrypt(char *keyfile, char *filein, char *fileout) {
+    // Allocate and initialize variables
     mpz_t d, n, plaintext, cyphertext;
     mpz_inits(d, n, plaintext, cyphertext, NULL);
 
@@ -45,9 +43,10 @@ int decrypt(char *keyfile, char *filein, char *fileout) {
     // Use key to decrypt message
     mpz_powm(plaintext, cyphertext, d, n);
 
-    // Write plaintext
+    // Write plaintext to file
     write_text_file(fileout, plaintext);
 
+    // Free variables
     mpz_clears(d, n, plaintext, cyphertext, NULL);
 
     return EXIT_SUCCESS;
@@ -64,6 +63,7 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
         return EXIT_FAILURE;
     }
 
+    // Extract raw exponent data from file
     if (!mpz_inp_raw(exponent, fptr)) {
         perror("Error: ");
         return EXIT_FAILURE;
@@ -72,6 +72,7 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
     // Skip newline char
     fgetc(fptr);
 
+    // Extract raw n data from file
     if (!mpz_inp_raw(n, fptr)) {
         perror("Error: ");
         return EXIT_FAILURE;
@@ -120,6 +121,7 @@ int write_text_file(char *filename, mpz_t message) {
     return EXIT_SUCCESS;
 }
 
+// TEST CODE
 /*
 int main() {
     mpz_t plaintext, cyphertext;
