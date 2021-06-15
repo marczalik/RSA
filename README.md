@@ -23,7 +23,7 @@ Option | Argument | Description
 
 ## TODO
 
-Expand README
+Expand README\
 Create Makefile  
 Continue adding errno/error checking  
 Expand comments on miller-rabin.c   
