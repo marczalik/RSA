@@ -1,9 +1,12 @@
 #include "rsa.h"
 
-/*      Given a keyfile and a message to encrypt, opens the keyfile, extracts the key
-        and uses it to encrypt the message in filein. 
-        Stores the encrypted result in fileout.         */
-int encrypt(char *keyfile, char *filein, char *fileout) {
+/* 
+ * Given a keyfile and a message to encrypt, opens the keyfile, extracts the key
+ * and uses it to encrypt the message in filein. 
+ * Stores the encrypted result in fileout.
+ */
+int encrypt(char *keyfile, char *filein, char *fileout)
+{
     // Allocate and initialize variables
     mpz_t e, n, plaintext, cyphertext;
     mpz_inits(e, n, plaintext, cyphertext, NULL);
@@ -26,10 +29,13 @@ int encrypt(char *keyfile, char *filein, char *fileout) {
     return EXIT_SUCCESS;
 }
 
-/*      Given a keyfile and a message to decrypt, opens the keyfile, extracts the key
-        and uses it to decrypt the message in filein. 
-        Stores the decrypted result in fileout.         */
-int decrypt(char *keyfile, char *filein, char *fileout) {
+/*
+ * Given a keyfile and a message to decrypt, opens the keyfile, extracts the key
+ * and uses it to decrypt the message in filein. 
+ * Stores the decrypted result in fileout.
+ */
+int decrypt(char *keyfile, char *filein, char *fileout)
+{
     // Allocate and initialize variables
     mpz_t d, n, plaintext, cyphertext;
     mpz_inits(d, n, plaintext, cyphertext, NULL);
@@ -52,19 +58,25 @@ int decrypt(char *keyfile, char *filein, char *fileout) {
     return EXIT_SUCCESS;
 }
 
-/*      Opens a keyfile and extracts the resulting key values to exponent (e or d) and n.       */
-int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
+/* 
+ * Opens a keyfile and extracts the resulting key values to exponent (e or d) 
+ * and n.
+ */
+int open_key_file(mpz_t exponent, mpz_t n, char *filename)
+{
     FILE *fptr;
 
     fptr = fopen(filename, "r");
     
-    if (!fptr) {
+    if (!fptr)
+    {
         perror("Error: ");
         return EXIT_FAILURE;
     }
 
     // Extract raw exponent data from file
-    if (!mpz_inp_raw(exponent, fptr)) {
+    if (!mpz_inp_raw(exponent, fptr))
+    {
         perror("Error: ");
         return EXIT_FAILURE;
     }
@@ -73,7 +85,8 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
     fgetc(fptr);
 
     // Extract raw n data from file
-    if (!mpz_inp_raw(n, fptr)) {
+    if (!mpz_inp_raw(n, fptr))
+    {
         perror("Error: ");
         return EXIT_FAILURE;
     }
@@ -83,13 +96,17 @@ int open_key_file(mpz_t exponent, mpz_t n, char *filename) {
     return EXIT_SUCCESS;
 }
 
-/*      Reads the message from filename and stores it for encryption/decryption.        */
-int read_text_file(char *filename, mpz_t message) {
+/*
+ * Reads the message from filename and stores it for encryption/decryption.
+ */
+int read_text_file(char *filename, mpz_t message)
+{
     FILE *fptr;
 
     fptr = fopen(filename, "r");
 
-    if (!fptr) {
+    if (!fptr)
+    {
         perror("Error: ");
         return EXIT_FAILURE;
     }
@@ -102,13 +119,17 @@ int read_text_file(char *filename, mpz_t message) {
     return EXIT_SUCCESS;
 }
 
-/*      Writes the encrypted/decrypted message to filename.     */
-int write_text_file(char *filename, mpz_t message) {
+/*
+ * Writes the encrypted/decrypted message to filename.
+ */
+int write_text_file(char *filename, mpz_t message)
+{
     FILE *fptr;
 
     fptr = fopen(filename, "w");
 
-    if (!fptr) {
+    if (!fptr)
+    {
         perror("Error: ");
         return EXIT_FAILURE;
     }
@@ -123,7 +144,8 @@ int write_text_file(char *filename, mpz_t message) {
 
 // TEST CODE
 /*
-int main() {
+int main()
+{
     mpz_t plaintext, cyphertext;
     mpz_inits(plaintext, cyphertext, NULL);
     mpz_set_ui(plaintext, 123456789);

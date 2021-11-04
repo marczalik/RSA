@@ -1,8 +1,11 @@
 #include "rsa.h"
 
-/*      Randomly searches until it finds a good candidate for a prime of bt_len.
-        Confidence of primality denoted by s.   */
-int generate_prime(mpz_t candidate, int bt_len, int s) {
+/*
+ * Randomly searches until it finds a good candidate for a prime of bt_len.
+ * Confidence of primality denoted by s.
+ */
+int generate_prime(mpz_t candidate, int bt_len, int s)
+{
     // Get seed for GMP
     int seed;
     srand(time(NULL));
@@ -13,8 +16,10 @@ int generate_prime(mpz_t candidate, int bt_len, int s) {
     gmp_randinit_mt(state);
     gmp_randseed_ui(state, seed);
 
-    // Find a new random integer using GMP, make sure it's odd, and test for primality until a candidate is found
-    do {
+    // Find a new random integer using GMP, make sure it's odd, and test for 
+    // primality until a candidate is found
+    do 
+    {
         mpz_urandomb(candidate, state, bt_len);
         // Setting the LSB to 0 makes the integer odd
         mpz_setbit(candidate, 0);
@@ -27,7 +32,8 @@ int generate_prime(mpz_t candidate, int bt_len, int s) {
 
 // TEST CODE
 /*
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int bt_len = atoi(argv[1]);
     int s = atoi(argv[2]);
     

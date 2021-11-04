@@ -5,17 +5,22 @@
 #define PUBLIC_NAME "-Public-Key.txt"
 #define SECRET_NAME "-Secret-Key.txt"
 
-/*      Returns values for e, d, and n to use as a keypair.
-        bt_len indicates length of d and n.
-        s indicates confidence level of primality testing.      */
-int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s) {
+/*
+ * Returns values for e, d, and n to use as a keypair.
+ * bt_len indicates length of d and n.
+ * s indicates confidence level of primality testing.
+ */
+int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s)
+{
     // Allocate and initialize variables
     mpz_t p, p_1, q, q_1, phi, gcd_e_phi;
     mpz_inits(p, p_1, q, q_1, phi, gcd_e_phi, NULL);
     
-    // Find suitable prime candidates for p and q, calculate n, and find Euler's Phi    
+    // Find suitable prime candidates for p and q, calculate n,
+    // and find Euler's Phi
     generate_prime(p, bt_len, s);
-    do {
+    do
+    {
     generate_prime(q, bt_len, s);
     mpz_mul(n, p, q);
     mpz_sub_ui(p_1, p, 1);
@@ -31,13 +36,17 @@ int generate_keys(mpz_t e, mpz_t d, mpz_t n, int bt_len, int s) {
     mpz_clears(p, p_1, q, q_1, phi, gcd_e_phi, NULL);
 }
 
-/*      Save newly generated keys to a public key file and a private key file.  */
-int save_keys(mpz_t e, mpz_t d, mpz_t n) {
+/* 
+ * Save newly generated keys to a public key file and a private key file.
+ */
+int save_keys(mpz_t e, mpz_t d, mpz_t n)
+{
     // Create filename with current date and time and key type
     char timestr[FILENAME_SIZE];
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
-    if (!strftime(timestr, sizeof(timestr), FILENAME_FORMAT, t)) {
+    if (!strftime(timestr, sizeof(timestr), FILENAME_FORMAT, t))
+    {
         perror("Error: ");
         exit(EXIT_FAILURE);
     }
@@ -51,12 +60,14 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
     pubfptr = fopen(pubfile, "w");
     secfptr = fopen(secfile, "w");
 
-    if (!pubfptr) {
+    if (!pubfptr)
+    {
         perror("Error: ");
         exit(EXIT_FAILURE);
     }
 
-    if (!secfptr) {
+    if (!secfptr)
+    {
         perror("Error: ");
         exit(EXIT_FAILURE);
     }
@@ -89,17 +100,23 @@ int save_keys(mpz_t e, mpz_t d, mpz_t n) {
     return EXIT_SUCCESS;
 }
 
-/*      Concatenate timestamp and filetype, return pointer to string.   */
-char *create_filename(char *timestr, char *filetype) {
+/* 
+ * Concatenate timestamp and filetype, return pointer to string.
+ */
+char *create_filename(char *timestr, char *filetype)
+{
     char *filename;
     char *end;
     size_t timestr_len = strlen(timestr);
     size_t filetype_len = strlen(filetype);
 
     // Concatenate time string and file type
-    if (filename = malloc(timestr_len + filetype_len + 1)) {
-        if (snprintf(filename, timestr_len + filetype_len + 1, "%s%s", timestr, filetype) > 
-            (timestr_len + filetype_len + 1)) {
+    if (filename = malloc(timestr_len + filetype_len + 1))
+    {
+        if (snprintf(filename, timestr_len + filetype_len + 1, 
+                    "%s%s", timestr, filetype) > 
+            (timestr_len + filetype_len + 1)) 
+        {
             perror("Error: ");
             exit(EXIT_FAILURE);
         }
@@ -108,10 +125,14 @@ char *create_filename(char *timestr, char *filetype) {
     return filename;
 }
 
-/*      Generate a new keypair and save them to two files: a public key and a secret key.
-        bt_len indicates length of d and n.
-        s indicates confidence level of primality testing.      */
-int create_new_keypair(int bt_len, int s) {
+/* 
+ * Generate a new keypair and save them to two files: a public key and a
+ * secret key.
+ * bt_len indicates length of d and n.
+ * s indicates confidence level of primality testing.
+ */
+int create_new_keypair(int bt_len, int s)
+{
     // Allocate and initialize variables
     mpz_t e, d, n;
     mpz_inits(d, n, NULL);
@@ -129,7 +150,8 @@ int create_new_keypair(int bt_len, int s) {
 
 // TEST CODE
 /*
-int main() {
+int main()
+{
     mpz_t plaintext, cyphertext;
     mpz_inits(plaintext, cyphertext, NULL);
     mpz_set_ui(plaintext, 123456789);

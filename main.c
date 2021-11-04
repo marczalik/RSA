@@ -28,8 +28,11 @@ typedef struct {
 void usage(char *progname, int opt);
 int execute_option(options_t *options);
 
-/*      Handle command line arguments for RSA.  */
-int main(int argc, char *argv[]) {
+/* 
+ * Handle command line arguments for RSA.
+ */
+int main(int argc, char *argv[])
+{
     // Initialize variables and struct
     int opt;
     options_t options = { 0, 0, 2048, "stdin", "stdout", "stdout" };
@@ -37,8 +40,10 @@ int main(int argc, char *argv[]) {
     opterr = 0;
 
     // Parse options
-    while ((opt = getopt(argc, argv, OPTSTR)) != EOF) {
-        switch (opt) {
+    while ((opt = getopt(argc, argv, OPTSTR)) != EOF)
+    {
+        switch (opt)
+        {
             // Generate new keypairs
             case 'g':
                 // Add functionality to generate keypair
@@ -77,7 +82,8 @@ int main(int argc, char *argv[]) {
     }
 
     // Execute options
-    if (execute_option(&options) != EXIT_SUCCESS) {
+    if (execute_option(&options) != EXIT_SUCCESS)
+    {
         perror(ERR_EXEC_OPT);
         exit(EXIT_FAILURE);
     }
@@ -85,45 +91,59 @@ int main(int argc, char *argv[]) {
     return EXIT_SUCCESS;
 }
 
-/*      Reports correct usage of main.  */
-void usage(char *progname, int opt) {
+/*
+ * Reports correct usage of main.
+ */
+void usage(char *progname, int opt)
+{
     fprintf(stderr, USAGE_FMT, progname ? progname : DEFAULT_PROGNAME);
     exit(EXIT_FAILURE);
 }
 
-/*      Runs command line arguments.     */
-int execute_option(options_t *options) {
+/*
+ * Runs command line arguments.
+ */
+int execute_option(options_t *options)
+{
     // Error if no option object
-    if (!options) {
+    if (!options)
+    {
         errno = EINVAL;
         return EXIT_FAILURE;
     }
 
     // Error if no option selected
-    if (!options->mode) {
+    if (!options->mode)
+    {
         errno = EINVAL;
         return EXIT_FAILURE;
     }
 
     // Call functions based on flags
-    if (options->mode == 'g') {
-        if (!options->bt_len) {
+    if (options->mode == 'g')
+    {
+        if (!options->bt_len)
+        {
             errno = EINVAL;
             return EXIT_FAILURE; 
         }
         create_new_keypair(options->bt_len, 40);
     }
 
-    if (options->mode == 'e') {
-        if (!options->keyfile || !options->message || !options->output) {
+    if (options->mode == 'e')
+    {
+        if (!options->keyfile || !options->message || !options->output)
+        {
             errno = EINVAL;
             return EXIT_FAILURE; 
         }
         encrypt(options->keyfile, options->message, options->output);
     }
 
-    if (options->mode == 'd') {
-        if (!options->keyfile || !options->message || !options->output) {
+    if (options->mode == 'd')
+    {
+        if (!options->keyfile || !options->message || !options->output)
+        {
             errno = EINVAL;
             return EXIT_FAILURE; 
         }
