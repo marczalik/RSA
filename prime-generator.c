@@ -31,7 +31,7 @@ int generate_prime(mpz_t candidate, int bt_len, int s)
 }
 
 // TEST CODE
-/*
+#if 0
 int main(int argc, char *argv[])
 {
     int bt_len = atoi(argv[1]);
@@ -46,4 +46,5 @@ int main(int argc, char *argv[])
 
     mpz_clear(prime);
 }
-*/
+#endif
+

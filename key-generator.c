@@ -149,7 +149,7 @@ int create_new_keypair(int bt_len, int s)
 }
 
 // TEST CODE
-/*
+#if 0
 int main()
 {
     mpz_t plaintext, cyphertext;
@@ -194,4 +194,5 @@ int main()
     
     return 0;
 }
-*/
+#endif
+

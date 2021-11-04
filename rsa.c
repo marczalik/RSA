@@ -143,7 +143,7 @@ int write_text_file(char *filename, mpz_t message)
 }
 
 // TEST CODE
-/*
+#if 0
 int main()
 {
     mpz_t plaintext, cyphertext;
@@ -186,4 +186,5 @@ int main()
 
     return 0;
 }
-*/
+#endif
+

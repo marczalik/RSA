@@ -110,7 +110,7 @@ int miller_rabin(mpz_t n, int s)
 }
 
 // TEST CODE
-/*
+#if 0
 int main() {
     // grab a random int from C rand()
     int seed;
@@ -148,4 +148,5 @@ int main() {
 
     return 0;
 }
-*/
+#endif
+
