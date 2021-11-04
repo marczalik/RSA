@@ -24,8 +24,8 @@ Option | Argument | Description
 ## TODO
 
 Expand README, add gifs\
-Replace commented out test code with debug macros
-Create Makefile  
-Continue adding errno/error checking  
-Expand comments on miller-rabin.c   
+Replace commented out test code with debug macros\
+Create Makefile\ 
+Continue adding errno/error checking\
+Expand comments on miller-rabin.c
     
